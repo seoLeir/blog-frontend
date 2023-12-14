@@ -1,0 +1,46 @@
+.comment{
+    border: 3px solid rgba(0, 0, 255, 0.5);
+    border-radius: 10mm;
+    min-height: 50px;
+    min-width: 300px;
+}
+/* Скрыть радио-кнопки */
+input[type="radio"] {
+    display: none;
+}
+.btn:focus,
+.btn:active,
+input[type="radio"]:focus,
+input[type="radio"]:active{
+    border: none;
+    outline: none;
+}
+.btn:focus .bi{
+    color:blue;
+}
+.btn:active .bi{
+    color:blue;
+}
+.btn {
+    cursor: pointer;
+}
+input[type="radio"]:focus{
+    color:blue;
+}
+/* Изменение стилей иконок в зависимости от состояния радио-кнопок */
+input[type="radio"]:checked + .bi-hand-thumbs-up-fill {
+    color: green;
+}
+
+input[type="radio"]:checked + .bi-hand-thumbs-down-fill {
+    color: red;
+}
+.scrollable {
+    height: 650px;
+    min-width: fit-content;
+    overflow-y: auto;
+    border: 2px solid #ccc;
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 10px;
+}

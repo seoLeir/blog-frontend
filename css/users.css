@@ -1,0 +1,39 @@
+.form-check .form-check-input {
+  display: none;
+}
+.form-switch{
+    paddind-left: 0.5em;
+}
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  user-select: none;
+}
+.form-check-label {
+  background-color: #e9ecef; /* Цвет фона кнопки */
+  border-radius: 15px; /* Радиус скругления кнопки */
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  padding: 7px; /* Добавьте небольшой внутренний отступ */
+}
+.form-check-label.active {
+  background-color: #007bff; /* Цвет фона активной кнопки */
+}
+.form-check-input:checked + .form-check-label::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background-color: #fff; /* Цвет "переключателя" в активном состоянии */
+  border-radius: 50%; /* Радиус скругления "переключателя" */
+}
+.custom-checkbox{
+    /* Уменьшаем отступы */
+    margin-bottom: 15px;
+    margin-left: -25px;
+}
+.filter .roles-selector{
+    padding-top:10px;
+}

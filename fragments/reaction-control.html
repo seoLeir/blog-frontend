@@ -1,0 +1,12 @@
+<form>
+    <label class="btn">
+        <input ng-checked="liked" ng-click="setLiked(true)" type="radio" class="btn-check" name="reaction" autocomplete="off" ng-disabled="!canReact()">
+        <span class="bi bi-hand-thumbs-up-fill"></span>
+        {{reactionStatistics.likesCount}}
+    </label>
+    <label class="btn">
+        <input ng-checked="!liked && liked != null" ng-click="setLiked(false)" type="radio" class="btn-check" name="reaction" autocomplete="off" ng-disabled="!canReact()">
+        <span class="bi bi-hand-thumbs-down-fill"></span>
+        {{reactionStatistics.dislikesCount}}
+    </label>
+</form>

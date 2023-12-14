@@ -1,0 +1,50 @@
+<style>
+    .item_actions{
+        margin:0.5em;
+    }
+</style>
+<h1 class="mb-4">Список статей</h1>
+<div ng-controller="ArticlesController">
+    <form ng-submit="filterArticles()" class="d-flex flex-row align-items-end">
+        <div class="mb-3 me-3">
+            <label for="titleInput" class="form-label d-flex flex-column">Название:</label>
+            <input type="text" ng-model="filter.title" id="titleInput" class="form-control" placeholder="Введите название">
+        </div>
+
+        <div class="mb-3 me-3">
+            <label for="authorInput" class="form-label d-flex flex-column">Имя автора:</label>
+            <input type="text" ng-model="filter.author" id="authorInput" class="form-control" placeholder="Введите имя автора">
+        </div>
+        <div class="mb-3 me-3">
+            <label for="minDateInput" class="form-label d-flex flex-column">Дата после:</label>
+            <input type="date" ng-model="filter.minDate" id="minDateInput" class="form-control">
+        </div>
+        <div class="mb-3 me-3">
+            <label for="maxDateInput" class="form-label d-flex flex-column">Дата до:</label>
+            <input type="date" ng-model="filter.maxDate" id="maxDateInput" class="form-control">
+        </div>
+        <div class="mb-3 me-3">
+            <button type="submit" class="btn btn-primary">Применить фильтр</button>
+        </div>
+        <div class="mb-3 me-3">
+            <button type="reset" class="btn btn-secondary" ng-click="resetFilter()">Сбросить фильтр</button>
+        </div>
+    </form>
+    <div ng-show="contentLoading && loadingError == null" class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Загрузка...</span>
+    </div>
+    <div ng-show="!contentLoading && articles.length === 0 && loadingError == null" class="alert alert-info" role="alert">
+        Кажется статей пока нет...
+    </div>
+    <div ng-show="loadingError != null" class="alert alert-danger">{{loadingError}}</div>
+    <div ng-show="!contentLoading" class="card me-3" ng-repeat="item in articles">
+        <div class="card-body">
+            <h5 class="card-title"><a href="javascript:;" ng-click="goToArticle(item.id)">{{ item.title }}</a></h5>
+            <p class="card-text">Издатель: {{ item.publisher.name }}</p>
+            <p class="card-text"><small class="text-muted">{{ item.publishDate | date:'dd.MM.yyyy HH:mm:ss' }}</small></p>
+            <div ng-include="'fragments/additional-actions.html'"></div>
+        </div>
+    </div>
+    <div ng-include="'fragments/pagination.html'"></div>
+    <div ng-include="'fragments/edit-article.html'"></div>
+</div>

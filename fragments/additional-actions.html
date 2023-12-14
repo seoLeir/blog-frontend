@@ -1,0 +1,11 @@
+<!--Данный файл предназначен для универсальных действий для статей/комментариев-->
+<div ng-show="hasAnyActionsForItem(item)" class="position-absolute end-0 top-0 item-actions">
+  <ul class="list-unstyled" aria-labelledby="dropdownMenuButton">
+    <li ng-show="canEditItem(item)">
+      <button class="btn my-button edit-button bi bi-pen-fill" ng-click="editItem(item)" title="Редактировать"></button>
+    </li>
+    <li ng-show="canDeleteItem(item)">
+      <button class="btn my-button delete-button bi bi-trash-fill" ng-click="deleteItem(item)" title="Удалить"></button>
+    </li>
+  </ul>
+</div>

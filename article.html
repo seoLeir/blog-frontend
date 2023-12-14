@@ -1,0 +1,71 @@
+<style>
+</style>
+<div class="container">
+    <div ng-controller="ArticleController">
+        <h1>{{article.title}}</h1>
+        <p>{{article.text}}</p>
+        <div ng-if="article">
+            <div ng-controller="ArticleReactionController" ng-init="targetId = article.id" class="reactions" ng-include="'fragments/reaction-control.html'"></div>
+        </div>
+    </div>
+    <h2>Комментарии:</h2>
+    <div ng-controller="CommentController" class="w-75">
+        <form name="newCommentForm" ng-show="canPost()" ng-submit="postComment()" class="mt-4">
+            <div class="form-group">
+                <label for="comment">Напишите комментарий:</label>
+                <textarea id="comment" ng-model="newComment.text" class="form-control" rows="4" maxlength="{{maxCommentLength}}" ng-disabled="postCommentRequestProcessed" required></textarea>
+                <p class="alert" ng-class="charactersLeftForNewComment > maxCommentLength/2 ? 'alert-info' : 'alert-warning'">Символов осталось: {{charactersLeftForNewComment}}</p>
+            </div>
+            <button type="submit" class="btn btn-primary" ng-disabled="newCommentForm.$invalid || postCommentRequestProcessed">
+                <span ng-show="postCommentRequestProcessed" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span ng-show="postCommentRequestProcessed" class="visually-hidden" role="status">Отправка...</span>
+                <span>Добавить комментарий</span>
+            </button>
+        </form>
+        <div ng-if="!contentLoading && comments.length <= 0 && loadingError == null" class="alert alert-info">
+            А их пока нет.
+        </div>
+        <div ng-show="loadingError != null" class="alert alert-danger">{{loadingError}}</div>
+        <div id="comments" ng-if="comments.length > 0" class="scrollable" ng-scroll="loadMoreComments()">
+            <div ng-repeat="item in comments" class="card mb-3 comment">
+                <div class="card-body position-relative">
+                    <h5 class="card-title">{{ item.authorName }}</h5>
+                    <p class="card-text">{{ item.text }}</p>
+                    <div style="display: flex; align-items: center;">
+                        <small class="text-muted">{{ item.publishDate | date:'dd.MM.yyyy HH:mm' }}</small>
+                        <div ng-controller="CommentReactionController" ng-init="targetId = item.id" class="reactions" ng-include="'fragments/reaction-control.html'"></div>
+                    </div>
+                    <div ng-include="'fragments/additional-actions.html'"></div>
+                </div>
+            </div>
+            <div ng-show="contentLoading && loadingError == null" class="spinner-border text-primary d-flex m-auto justify-content-center" role="status">
+                <span class="visually-hidden">Загрузка...</span>
+            </div>
+        </div>
+        <div class="modal fade" id="editCommentModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCommentLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editCommentLabel">Редактирование комментария</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form name="editCommentForm">
+                        <div class="modal-body">
+                            <label for="editCommentText">Новый текст комментария</label>
+                            <textarea id="editCommentText" ng-model="editedComment.text" class="form-control" rows="4" maxlength="{{maxCommentLength}}" ng-disabled="editCommentRequestProcessed" required></textarea>
+                            <p class="alert" ng-class="charactersLeftForEditedComment > maxCommentLength/2 ? 'alert-info' : 'alert-warning'">Символов осталось: {{charactersLeftForEditedComment}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button id="confirmCommentEdit" class="btn btn-primary" ng-disabled="editCommentForm.$invalid || editCommentRequestProcessed" data-button-clicked="ok">
+                                <span ng-show="editCommentRequestProcessed" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                <span ng-show="editCommentRequestProcessed" class="visually-hidden" role="status">Обработка...</span>
+                                <span>Отредактировать</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

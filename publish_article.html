@@ -1,0 +1,17 @@
+<div ng-controller="ArticleController" class="container">
+    <form name="postNewArticle" ng-show="canPublish()" ng-submit="publishArticle()" class="mt-4" novalidate>
+        <div class="form-group mb-2">
+            <label for="article-title">Напишите заголовок статьи</label>
+            <input id="article-title" name="title" ng-class="postNewArticle.title.$valid ? 'is-valid' : 'is-invalid'" type="text" ng-model="newArticle.title" class="form-control" maxlength="{{maxArticleTitleLength}}" ng-disabled="articlePublishing" required>
+        </div>
+        <div class="form-group mb-2">
+            <label for="article-text">Напишите текст статьи:</label>
+            <textarea name="text" ng-class="postNewArticle.text.$valid ? 'is-valid' : 'is-invalid'" id="article-text" ng-model="newArticle.text" class="form-control" rows="20" maxlength="{{maxArticleTextLength}}" ng-disabled="articlePublishing" required></textarea>
+        </div>
+        <button ng-disabled="postNewArticle.$invalid || articlePublishing" type="submit" class="btn btn-primary">
+            <span ng-show="articlePublishing" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span ng-show="articlePublishing" class="visually-hidden" role="status">Отправка...</span>
+            <span>Опубликовать статью</span>
+        </button>
+    </form>
+</div>

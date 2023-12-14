@@ -1,0 +1,17 @@
+.item-actions{
+    margin: 0.7em;
+    border-radius: 20px;
+}
+.my-button {
+    background-color: initial; /* Установите начальный цвет фона */
+    transition: background-color 0.3s ease; /* Добавьте плавный переход для изменения цвета фона */
+    border-radius: 30px;
+    /* Допустим, вы хотите, чтобы фон менялся на красный при наведении */
+}
+
+.delete-button:hover {
+    background-color: red; /* Установите цвет фона при наведении */
+}
+.edit-button:hover{
+    background-color: #007bff;
+}

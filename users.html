@@ -1,0 +1,95 @@
+<div ng-controller="UserController">
+    <div ng-if="canAdmin()" class="container mt-5">
+        <form ng-submit="filterUsers()" class="filter">
+            <div class="form-group">
+                <label for="nameFilter">Имя пользователя:</label>
+                <input type="text" class="form-control" id="nameFilter" ng-model="filter.name">
+            </div>
+            <div class="form-group d-flex flex-wrap roles-selector">
+                <label>Выберите роли:</label>
+                <div ng-repeat="roleName in availableRoles" class="me-3 form-check form-switch custom-checkbox">
+                    <label class="no-select form-check-label" ng-class="{'active': filter.roles[roleName]}">
+                        {{roleName}}
+                        <input type="checkbox" class="form-check-input" ng-model="filter.roles[roleName]">
+                    </label>
+                </div>
+            </div>
+            <div class="d-flex flex-row align-items-end">
+                <div class="mb-3 me-3">
+                    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                </div>
+                <div class="mb-3 me-3">
+                    <button type="reset" class="btn btn-secondary" ng-click="resetFilter()">Сбросить фильтр</button>
+                </div>
+            </div>
+        </form>
+        <div ng-show="contentLoading && loadingError == null" class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Загрузка...</span>
+        </div>
+        <div ng-show="loadingError != null" class="alert alert-danger">{{loadingError}}</div>
+        <div ng-if="users.length > 0 && !contentLoading">
+            <div ng-repeat="user in users">
+                <h1>{{user.name}}</h1>
+                <div class="d-flex flex-wrap">
+                    <h2>Roles:</h2>
+                    <div ng-repeat="roleName in availableRoles" class="me-3 form-check form-switch custom-checkbox">
+                        <label class="no-select form-check-label"
+                               ng-class="{'active': newRoles[user.userId][roleName]}">
+                            {{ roleName }}
+                            <input class="form-check-input" type="checkbox" ng-model="newRoles[user.userId][roleName]"
+                                   ng-checked="hasRole(user, roleName)" ng-change="updateRoles(user)">
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-warning" ng-disabled="!newRoles[user.userId].isChanged" ng-click="applyChanges(user)">
+                    <span ng-show="newRoles[user.userId].rolesUpdating" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span ng-show="newRoles[user.userId].rolesUpdating" class="visually-hidden" role="status">Обработка...</span>
+                    <span>Применить изменения</span>
+                </button>
+                <button ng-disabled="isItMe(user)" class="btn btn-danger" ng-click="deleteUser(user)">
+                    <span ng-show="user.deleting" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span ng-show="user.deleting" class="visually-hidden" role="status">Обработка...</span>
+                    <span>Удалить пользователя</span>
+                </button>
+                <hr>
+            </div>
+            <div ng-include="'fragments/pagination.html'"></div>
+        </div>
+        <h2>Создание пользователя:</h2>
+        <form ng-submit="createUser()" name="newUserForm">
+            <div class="form-group">
+                <label>
+                    Имя пользователя:
+                    <input type="text" class="form-control" ng-model="newUser.name"
+                           placeholder="Введите имя пользователя" required>
+                </label>
+
+            </div>
+            <div class="form-group">
+                <label>
+                    Пароль:
+                    <input type="password" class="form-control" ng-model="newUser.password" placeholder="Введите пароль"
+                           required>
+                </label>
+            </div>
+            <div class="form-group d-flex flex-wrap roles-selector">
+                <label>Выберите роли:</label>
+                <div ng-repeat="roleName in availableRoles" class="me-3 form-check form-switch custom-checkbox">
+                    <label class="no-select form-check-label" ng-class="{'active': newUser.roles[roleName]}">
+                        {{roleName}}
+                        <input type="checkbox" class="form-check-input" ng-model="newUser.roles[roleName]">
+                    </label>
+                </div>
+            </div>
+            <button ng-disabled="newUserForm.$invalid || userCreating" type="submit" class="btn btn-primary">
+                <span ng-show="userCreating" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span ng-show="userCreating" class="visually-hidden" role="status">Обработка...</span>
+                <span>Создать</span>
+            </button>
+        </form>
+    </div>
+    <div ng-show="isAuthenticated() && !canAdmin()" class="alert alert-danger" role="alert">У вас нет прав для действий
+        на данной странице!
+    </div>
+    <div ng-show="!isAuthenticated()" class="alert alert-danger" role="alert">Вы не авторизованы!</div>
+</div>

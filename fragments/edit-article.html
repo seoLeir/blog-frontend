@@ -1,0 +1,33 @@
+<div class="modal fade" id="editArticleModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editArticleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editArticleLabel">Редактировать статью</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="editArticleForm" class="needs-validation" novalidate>
+                <div class="modal-body">
+                    <!-- Форма смены пароля -->
+                    <div class="form-group">
+                        <label for="new-article-title">Заголовок:</label>
+                        <input type="text" class="form-control" ng-class="editArticleForm.articleTitle.$valid ? 'is-valid' : 'is-invalid'" id="new-article-title"
+                               name="articleTitle" ng-model="editingArticle.title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-article-text">Текст:</label>
+                        <textarea type="text" rows="20" class="form-control" ng-class="editArticleForm.articleText.$valid ? 'is-valid' : 'is-invalid'" id="new-article-text"
+                                  name="articleText" ng-model="editingArticle.text" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button id="confirmEditArticle" class="btn btn-danger" ng-disabled="editArticleForm.$invalid || editArticleRequestProcessing">
+                        <span ng-show="editArticleRequestProcessing" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span ng-show="editArticleRequestProcessing" class="visually-hidden" role="status">Processing...</span>
+                        <span>Отредактировать</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
